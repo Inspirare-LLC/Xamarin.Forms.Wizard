@@ -1,6 +1,10 @@
 # Xamarin.Forms.Wizard
 Simple Xamarin Forms wizard control
 
+# Nuget package
+Available as nuget package at https://www.nuget.org/packages/Xamarin.Forms.Wizard/
+Install it in shared code project.
+
 # Usage
 
 - Create wizard item view models for each step in the wizard
