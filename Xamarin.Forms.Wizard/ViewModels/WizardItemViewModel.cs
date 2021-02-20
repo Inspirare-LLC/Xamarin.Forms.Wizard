@@ -15,12 +15,13 @@ namespace Xamarin.Forms.Wizard.ViewModels
             ViewModel = new BaseViewModel();
         }
 
-        public WizardItemViewModel(string title, Type type, BaseViewModel viewModel, params object[] additionalParameters) : this()
+        public WizardItemViewModel(string title, Type type, BaseViewModel viewModel, bool isSkippable = false, params object[] additionalParameters) : this()
         {
             Title = title;
             Type = type;
             ViewModel = viewModel ?? new BaseViewModel();
             AdditionalParameters = additionalParameters ?? new object[0];
+            IsSkippable = isSkippable;
         }
 
         private Type _type;
@@ -49,6 +50,13 @@ namespace Xamarin.Forms.Wizard.ViewModels
         {
             get { return _view; }
             set { SetProperty(ref _view, value); }
+        }
+
+        private bool _isSkippable;
+        public bool IsSkippable
+        {
+            get { return _isSkippable; }
+            set { SetProperty(ref _isSkippable, value); }
         }
     }
 }

@@ -34,7 +34,8 @@ namespace Xamarin.Forms.Wizard.Views
         }
 
         public WizardPage(IEnumerable<WizardItemViewModel> items, bool isAnimationEnabled = true, string nextLabelText = null,
-                          string backLabelText = null, string finishLabelText = null, Color? progressBarColor = null) : this()
+                          string backLabelText = null, string finishLabelText = null, string skipLabelText = null,
+                          Color? progressBarColor = null) : this()
         {
             _viewModel = new WizardViewModel();
             BindingContext = _viewModel;
@@ -48,6 +49,9 @@ namespace Xamarin.Forms.Wizard.Views
 
             if (!String.IsNullOrEmpty(finishLabelText))
                 _viewModel.FinishButtonLabelText = finishLabelText;
+
+            if (!String.IsNullOrEmpty(skipLabelText))
+                _viewModel.SkipButtonLabelText = skipLabelText;
 
             //default color - green
             _viewModel.ProgressBarColor = progressBarColor ?? Color.Green;
@@ -89,6 +93,12 @@ namespace Xamarin.Forms.Wizard.Views
             UpdateCurrentItem(true);
         }
 
+        private async void SkipButton_Clicked(object sender, EventArgs e)
+        {
+            await _viewModel.IncreateCurrentItemIndex(true);
+            UpdateCurrentItem(true);
+        }
+
         private async void UpdateCurrentItem(bool isNext)
         {
             if (_viewModel.IsAnimationEnabled)
@@ -96,6 +106,7 @@ namespace Xamarin.Forms.Wizard.Views
 
             _viewModel.CurrentItem = _viewModel.Items[_viewModel.GetCurrentItemIndex()];
             _viewModel.Title = _viewModel.Items[_viewModel.GetCurrentItemIndex()].Title;
+            _viewModel.IsSkippable = _viewModel.Items[_viewModel.GetCurrentItemIndex()].IsSkippable;
 
             if (_viewModel.IsAnimationEnabled)
                 await StepContent.TranslateTo(0, 0);

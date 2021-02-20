@@ -21,6 +21,7 @@
                 <ProgressBar ProgressColor="{Binding ProgressBarColor}" Progress="{Binding ProgressBarProgress}" Visual="Material"/>
                 <StackLayout Orientation="Horizontal" Padding="20, 5">
                     <Button IsVisible="{Binding IsNotFirstItem}" Text="{Binding BackButtonLabel}" Clicked="BackButton_Clicked" HorizontalOptions="StartAndExpand" Visual="Material"/>
+                    <Button IsVisible="{Binding IsSkippable}" Text="{Binding SkipButtonLabel}" Clicked="SkipButton_Clicked"  HorizontalOptions="EndAndExpand" Visual="Material"/>
                     <Button Text="{Binding NextButtonLabel}" Clicked="NextButton_Clicked"  HorizontalOptions="EndAndExpand" Visual="Material"/>
                 </StackLayout>
             </StackLayout>

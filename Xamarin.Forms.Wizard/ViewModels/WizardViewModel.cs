@@ -17,6 +17,7 @@ namespace Xamarin.Forms.Wizard.ViewModels
             NextButtonLabelText = NextButtonLabel = "Next";
             BackButtonLabelText = BackButtonLabel = "Back";
             FinishButtonLabelText = "Finish";
+            SkipButtonLabelText = SkipButtonLabel = "Skip";
         }
 
         private List<WizardItemViewModel> _items;
@@ -47,6 +48,13 @@ namespace Xamarin.Forms.Wizard.ViewModels
             private set { SetProperty(ref _isNotFirstItem, value); }
         }
 
+        private bool _isSkippable;
+        public bool IsSkippable
+        {
+            get { return _isSkippable; }
+            set { SetProperty(ref _isSkippable, value); }
+        }
+
         private string _backButtonLabel;
         public string BackButtonLabel
         {
@@ -59,6 +67,13 @@ namespace Xamarin.Forms.Wizard.ViewModels
         {
             get { return _nextButtonLabel; }
             set { SetProperty(ref _nextButtonLabel, value); }
+        }
+
+        private string _skipButtonLabel;
+        public string SkipButtonLabel
+        {
+            get { return _skipButtonLabel; }
+            set { SetProperty(ref _skipButtonLabel, value); }
         }
 
         private double _progressBarProgress;
@@ -80,9 +95,10 @@ namespace Xamarin.Forms.Wizard.ViewModels
         public string NextButtonLabelText { get; set; }
         public string BackButtonLabelText { get; set; }
         public string FinishButtonLabelText { get; set; }
+        public string SkipButtonLabelText { get; set; }
         public bool IsAnimationEnabled { get; set; }
 
-        public async Task IncreateCurrentItemIndex()
+        public async Task IncreateCurrentItemIndex(bool skip = false)
         {
             var newIndex = _currentItemIndex + 1;
 
@@ -96,9 +112,14 @@ namespace Xamarin.Forms.Wizard.ViewModels
             }
 
             var item = Items[_currentItemIndex].View as IWizardView;
-            var result = await item.OnNext();
-            if (!result)
-                return;
+
+            //if skip, don't call on next
+            if (!skip)
+            {
+                var result = await item.OnNext();
+                if (!result)
+                    return;
+            }
 
             if (newIndex > Items.Count() - 1)
                 return;
