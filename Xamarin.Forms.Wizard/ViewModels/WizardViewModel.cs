@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms.Wizard.Abstractions;
+using Xamarin.Forms.Wizard.EventHandlers;
 
 namespace Xamarin.Forms.Wizard.ViewModels
 {
@@ -19,6 +20,8 @@ namespace Xamarin.Forms.Wizard.ViewModels
             FinishButtonLabelText = "Finish";
             SkipButtonLabelText = SkipButtonLabel = "Skip";
         }
+
+        public event EventHandler<WizardFinishedEventArgs> OnFinished;
 
         private List<WizardItemViewModel> _items;
         public List<WizardItemViewModel> Items
@@ -98,9 +101,16 @@ namespace Xamarin.Forms.Wizard.ViewModels
         public string SkipButtonLabelText { get; set; }
         public bool IsAnimationEnabled { get; set; }
 
-        public async Task IncreateCurrentItemIndex(bool skip = false)
+        public async Task IncreaseCurrentItemIndex(bool skip = false)
         {
             var newIndex = _currentItemIndex + 1;
+
+            //if finished, short circuit and exit
+            if(newIndex == Items.Count)
+            {
+                OnFinished?.Invoke(null, new WizardFinishedEventArgs(Items));
+                return;
+            }
 
             if (newIndex > 0)
                 IsNotFirstItem = true;
@@ -112,11 +122,12 @@ namespace Xamarin.Forms.Wizard.ViewModels
             }
 
             var item = Items[_currentItemIndex].View as IWizardView;
+            var itemViewModel = Items[_currentItemIndex].ViewModel;
 
             //if skip, don't call on next
             if (!skip)
             {
-                var result = await item.OnNext();
+                var result = await item.OnNext(itemViewModel);
                 if (!result)
                     return;
             }
@@ -138,7 +149,9 @@ namespace Xamarin.Forms.Wizard.ViewModels
                 IsNotFirstItem = false;
 
             var item = Items[_currentItemIndex].View as IWizardView;
-            var result = await item.OnPrevious();
+            var itemViewModel = Items[_currentItemIndex].ViewModel;
+
+            var result = await item.OnPrevious(itemViewModel);
             if (!result)
                 return;
 

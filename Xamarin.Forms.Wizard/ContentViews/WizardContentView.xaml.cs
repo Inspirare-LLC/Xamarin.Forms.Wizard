@@ -6,17 +6,30 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Wizard.Abstractions;
+using Xamarin.Forms.Wizard.EventHandlers;
 using Xamarin.Forms.Wizard.ViewModels;
 using Xamarin.Forms.Xaml;
 
 namespace Xamarin.Forms.Wizard.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class WizardPage : ContentPage
+    public partial class WizardContentView : ContentView
     {
         private readonly WizardViewModel _viewModel;
+        public event EventHandler<WizardFinishedEventArgs> OnFinished
+        {
+            add
+            {
+                _viewModel.OnFinished += value;
+            }
 
-        private WizardPage()
+            remove
+            {
+                _viewModel.OnFinished -= value;
+            }
+        }
+
+        private WizardContentView()
         {
             InitializeComponent();
             var swipeLeftGestureRecognizer = new SwipeGestureRecognizer();
@@ -33,7 +46,7 @@ namespace Xamarin.Forms.Wizard.Views
             Content.GestureRecognizers.Add(swipeRightGestureRecognizer);
         }
 
-        public WizardPage(IEnumerable<WizardItemViewModel> items, bool isAnimationEnabled = true, string nextLabelText = null,
+        public WizardContentView(IEnumerable<WizardItemViewModel> items, bool isAnimationEnabled = true, string nextLabelText = null,
                           string backLabelText = null, string finishLabelText = null, string skipLabelText = null,
                           Color? progressBarColor = null) : this()
         {
@@ -89,13 +102,13 @@ namespace Xamarin.Forms.Wizard.Views
 
         private async void NextButton_Clicked(object sender, EventArgs e)
         {
-            await _viewModel.IncreateCurrentItemIndex();
+            await _viewModel.IncreaseCurrentItemIndex();
             UpdateCurrentItem(true);
         }
 
         private async void SkipButton_Clicked(object sender, EventArgs e)
         {
-            await _viewModel.IncreateCurrentItemIndex(true);
+            await _viewModel.IncreaseCurrentItemIndex(true);
             UpdateCurrentItem(true);
         }
 
