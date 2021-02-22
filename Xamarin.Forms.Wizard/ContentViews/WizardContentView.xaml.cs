@@ -72,54 +72,77 @@ namespace Xamarin.Forms.Wizard.Views
             if (!items.Any())
                 throw new ArgumentException("Provide items.", nameof(items));
 
-            foreach (var item in items)
-            {
-                var args = new List<object>(1 + item.AdditionalParameters.Count());
-                args.Add(item.ViewModel);
-                args.AddRange(item.AdditionalParameters);
-
-                if (!item.Type.IsSubclassOf(typeof(View)) && item.Type != typeof(View))
-                    throw new ArgumentException(item.Type + " has to be derived from View", nameof(items));
-
-                var view = Activator.CreateInstance(item.Type, args.ToArray()) as View;
-
-                if (!(view is IWizardView))
-                    throw new ArgumentException(item.Type + " must implement IWizardInterface", nameof(items));
-
-                item.View = view;
-            }
-
             _viewModel.Items = items.ToList();
-            _viewModel.CurrentItem = _viewModel.Items[0];
+
+            var item = _viewModel.Items[0];
+            var args = new List<object>(1 + item.AdditionalParameters.Count());
+            args.Add(item.ViewModel);
+            args.AddRange(item.AdditionalParameters);
+
+            if (!item.Type.IsSubclassOf(typeof(View)) && item.Type != typeof(View))
+                throw new ArgumentException(item.Type + " has to be derived from View", nameof(items));
+
+            var view = Activator.CreateInstance(item.Type, args.ToArray()) as View;
+
+            if (!(view is IWizardView))
+                throw new ArgumentException(item.Type + " must implement IWizardView interface", nameof(items));
+
+            item.View = view;
+
+            _viewModel.CurrentItem = item;
             _viewModel.Title = _viewModel.Items[0].Title;
         }
 
         private async void BackButton_Clicked(object sender, EventArgs e)
         {
+            var currentItem = _viewModel.Items[_viewModel.GetCurrentItemIndex()].ViewModel;
+
             await _viewModel.DecreaseCurrentItemIndex();
-            UpdateCurrentItem(false);
+            UpdateCurrentItem(false, currentItem);
         }
 
         private async void NextButton_Clicked(object sender, EventArgs e)
         {
+            var currentItem = _viewModel.Items[_viewModel.GetCurrentItemIndex()].ViewModel;
+
             await _viewModel.IncreaseCurrentItemIndex();
-            UpdateCurrentItem(true);
+            UpdateCurrentItem(true, currentItem);
         }
 
         private async void SkipButton_Clicked(object sender, EventArgs e)
         {
+            var currentItem = _viewModel.Items[_viewModel.GetCurrentItemIndex()].ViewModel;
+
             await _viewModel.IncreaseCurrentItemIndex(true);
-            UpdateCurrentItem(true);
+            UpdateCurrentItem(true, currentItem);
         }
 
-        private async void UpdateCurrentItem(bool isNext)
+        private async void UpdateCurrentItem(bool isNext, BaseViewModel previousViewModel = null)
         {
+            var item = _viewModel.Items[_viewModel.GetCurrentItemIndex()];
+            var args = new List<object>(1 + (previousViewModel != null ? 1 : 0) + item.AdditionalParameters.Count());
+            args.Add(item.ViewModel);
+            if (previousViewModel != null)
+                args.Add(previousViewModel);
+
+            args.AddRange(item.AdditionalParameters);
+
+            if (!item.Type.IsSubclassOf(typeof(View)) && item.Type != typeof(View))
+                throw new ArgumentException(item.Type + " has to be derived from View", nameof(item));
+
+            var view = Activator.CreateInstance(item.Type, args.ToArray()) as View;
+
+            if (!(view is IWizardView))
+                throw new ArgumentException(item.Type + " must implement IWizardView interface", nameof(item));
+
+            item.View = view;
+
             if (_viewModel.IsAnimationEnabled)
                 await StepContent.TranslateTo(isNext ? -1000 : 1000, StepContent.Y);
 
-            _viewModel.CurrentItem = _viewModel.Items[_viewModel.GetCurrentItemIndex()];
-            _viewModel.Title = _viewModel.Items[_viewModel.GetCurrentItemIndex()].Title;
-            _viewModel.IsSkippable = _viewModel.Items[_viewModel.GetCurrentItemIndex()].IsSkippable;
+            _viewModel.CurrentItem = item;
+            _viewModel.Title = item.Title;
+            _viewModel.IsSkippable = item.IsSkippable;
 
             if (_viewModel.IsAnimationEnabled)
                 await StepContent.TranslateTo(0, 0);
