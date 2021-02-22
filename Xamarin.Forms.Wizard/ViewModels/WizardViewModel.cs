@@ -112,15 +112,6 @@ namespace Xamarin.Forms.Wizard.ViewModels
                 return;
             }
 
-            if (newIndex > 0)
-                IsNotFirstItem = true;
-
-            if (newIndex == Items.Count() - 1)
-            {
-                IsLastItem = true;
-                NextButtonLabel = FinishButtonLabelText;
-            }
-
             var item = Items[_currentItemIndex].View as IWizardView;
             var itemViewModel = Items[_currentItemIndex].ViewModel;
 
@@ -135,6 +126,15 @@ namespace Xamarin.Forms.Wizard.ViewModels
             if (newIndex > Items.Count() - 1)
                 return;
 
+            if (newIndex > 0)
+                IsNotFirstItem = true;
+
+            if (newIndex == Items.Count() - 1)
+            {
+                IsLastItem = true;
+                NextButtonLabel = FinishButtonLabelText;
+            }
+
             _currentItemIndex = newIndex;
             ProgressBarProgress = Math.Truncate(10 * (double)(_currentItemIndex + 1) / (Items.Count == 0 ? 1 : Items.Count)) / 10;
         }
@@ -145,15 +145,15 @@ namespace Xamarin.Forms.Wizard.ViewModels
             if (newIndex < 0)
                 return;
 
-            if (newIndex == 0)
-                IsNotFirstItem = false;
-
             var item = Items[_currentItemIndex].View as IWizardView;
             var itemViewModel = Items[_currentItemIndex].ViewModel;
 
             var result = await item.OnPrevious(itemViewModel);
             if (!result)
                 return;
+
+            if (newIndex == 0)
+                IsNotFirstItem = false;
 
             if (newIndex != Items.Count() - 1)
             {
