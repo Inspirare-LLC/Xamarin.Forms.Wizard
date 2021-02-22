@@ -97,24 +97,27 @@ namespace Xamarin.Forms.Wizard.Views
         {
             var currentItem = _viewModel.Items[_viewModel.GetCurrentItemIndex()].ViewModel;
 
-            await _viewModel.DecreaseCurrentItemIndex();
-            UpdateCurrentItem(false, currentItem);
+            var result = await _viewModel.DecreaseCurrentItemIndex();
+            if (result)
+                UpdateCurrentItem(false, currentItem);
         }
 
         private async void NextButton_Clicked(object sender, EventArgs e)
         {
             var currentItem = _viewModel.Items[_viewModel.GetCurrentItemIndex()].ViewModel;
 
-            await _viewModel.IncreaseCurrentItemIndex();
-            UpdateCurrentItem(true, currentItem);
+            var result = await _viewModel.IncreaseCurrentItemIndex();
+            if (result)
+                UpdateCurrentItem(true, currentItem);
         }
 
         private async void SkipButton_Clicked(object sender, EventArgs e)
         {
             var currentItem = _viewModel.Items[_viewModel.GetCurrentItemIndex()].ViewModel;
 
-            await _viewModel.IncreaseCurrentItemIndex(true);
-            UpdateCurrentItem(true, currentItem);
+            var result = await _viewModel.IncreaseCurrentItemIndex(true);
+            if (result)
+                UpdateCurrentItem(true, currentItem);
         }
 
         private async void UpdateCurrentItem(bool isNext, BaseViewModel previousViewModel = null)

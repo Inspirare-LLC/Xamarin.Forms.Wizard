@@ -101,7 +101,7 @@ namespace Xamarin.Forms.Wizard.ViewModels
         public string SkipButtonLabelText { get; set; }
         public bool IsAnimationEnabled { get; set; }
 
-        public async Task IncreaseCurrentItemIndex(bool skip = false)
+        public async Task<bool> IncreaseCurrentItemIndex(bool skip = false)
         {
             var newIndex = _currentItemIndex + 1;
 
@@ -109,7 +109,7 @@ namespace Xamarin.Forms.Wizard.ViewModels
             if(newIndex == Items.Count)
             {
                 OnFinished?.Invoke(null, new WizardFinishedEventArgs(Items));
-                return;
+                return true;
             }
 
             var item = Items[_currentItemIndex].View as IWizardView;
@@ -120,11 +120,11 @@ namespace Xamarin.Forms.Wizard.ViewModels
             {
                 var result = await item.OnNext(itemViewModel);
                 if (!result)
-                    return;
+                    return false;
             }
 
             if (newIndex > Items.Count() - 1)
-                return;
+                return false;
 
             if (newIndex > 0)
                 IsNotFirstItem = true;
@@ -137,20 +137,21 @@ namespace Xamarin.Forms.Wizard.ViewModels
 
             _currentItemIndex = newIndex;
             ProgressBarProgress = Math.Truncate(10 * (double)(_currentItemIndex + 1) / (Items.Count == 0 ? 1 : Items.Count)) / 10;
+            return true;
         }
 
-        public async Task DecreaseCurrentItemIndex()
+        public async Task<bool> DecreaseCurrentItemIndex()
         {
             var newIndex = _currentItemIndex - 1;
             if (newIndex < 0)
-                return;
+                return false;
 
             var item = Items[_currentItemIndex].View as IWizardView;
             var itemViewModel = Items[_currentItemIndex].ViewModel;
 
             var result = await item.OnPrevious(itemViewModel);
             if (!result)
-                return;
+                return false;
 
             if (newIndex == 0)
                 IsNotFirstItem = false;
@@ -163,6 +164,7 @@ namespace Xamarin.Forms.Wizard.ViewModels
 
             _currentItemIndex = newIndex;
             ProgressBarProgress = Math.Truncate(10 * (double)(_currentItemIndex + 1) / (Items.Count == 0 ? 1 : Items.Count)) / 10;
+            return true;
         }
 
         public int GetCurrentItemIndex()
