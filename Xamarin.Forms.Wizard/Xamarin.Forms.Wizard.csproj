@@ -3,14 +3,14 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.0.7</Version>
-    <AssemblyVersion>1.0.0.7</AssemblyVersion>
+    <Version>1.0.0.9</Version>
+    <AssemblyVersion>1.0.0.9</AssemblyVersion>
     <Authors>Jonas Petraška</Authors>
     <Company>Inspirare, UAB</Company>
     <Product>Xamarin Forms Wizard</Product>
     <PackageProjectUrl>https://github.com/Inspirare-LLC/Xamarin.Forms.Wizard</PackageProjectUrl>
     <Description>Simple xamarin forms wizard</Description>
-    <FileVersion>1.0.0.7</FileVersion>
+    <FileVersion>1.0.0.9</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

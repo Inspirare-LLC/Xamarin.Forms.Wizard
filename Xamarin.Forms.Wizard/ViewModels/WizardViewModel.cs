@@ -105,13 +105,6 @@ namespace Xamarin.Forms.Wizard.ViewModels
         {
             var newIndex = _currentItemIndex + 1;
 
-            //if finished, short circuit and exit
-            if(newIndex == Items.Count)
-            {
-                OnFinished?.Invoke(null, new WizardFinishedEventArgs(Items));
-                return true;
-            }
-
             var item = Items[_currentItemIndex].View as IWizardView;
             var itemViewModel = Items[_currentItemIndex].ViewModel;
 
@@ -121,6 +114,13 @@ namespace Xamarin.Forms.Wizard.ViewModels
                 var result = await item.OnNext(itemViewModel);
                 if (!result)
                     return false;
+            }
+
+            //if finished, short circuit and exit
+            if (newIndex == Items.Count)
+            {
+                OnFinished?.Invoke(null, new WizardFinishedEventArgs(Items));
+                return true;
             }
 
             if (newIndex > Items.Count() - 1)
