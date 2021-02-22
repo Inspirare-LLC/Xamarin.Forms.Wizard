@@ -17,7 +17,7 @@
                 <BoxView HeightRequest="1" Color="Black"/>
             </StackLayout>
             <ContentView x:Name="StepContent" Padding="15" VerticalOptions="Start" Content="{Binding CurrentItem.View}" Grid.Row="1"/>
-            <StackLayout Grid.Row="2">
+            <StackLayout Grid.Row="2" Padding="0,0,0,5">
                 <ProgressBar ProgressColor="{Binding ProgressBarColor}" Progress="{Binding ProgressBarProgress}" Visual="Material"/>
                 <StackLayout Orientation="Horizontal" Padding="20, 5">
                     <Button IsVisible="{Binding IsNotFirstItem}" Text="{Binding BackButtonLabel}" Clicked="BackButton_Clicked" HorizontalOptions="StartAndExpand" Visual="Material"/>
