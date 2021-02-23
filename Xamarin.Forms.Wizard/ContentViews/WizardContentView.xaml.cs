@@ -108,7 +108,7 @@ namespace Xamarin.Forms.Wizard.Views
 
             var result = await _viewModel.IncreaseCurrentItemIndex();
             if (result)
-                UpdateCurrentItem(true, currentItem);
+                await UpdateCurrentItem(true, currentItem);
         }
 
         private async void SkipButton_Clicked(object sender, EventArgs e)
@@ -117,10 +117,10 @@ namespace Xamarin.Forms.Wizard.Views
 
             var result = await _viewModel.IncreaseCurrentItemIndex(true);
             if (result)
-                UpdateCurrentItem(true, currentItem);
+                await UpdateCurrentItem(true, currentItem);
         }
 
-        private async void UpdateCurrentItem(bool isNext, BaseViewModel previousViewModel = null)
+        private async Task UpdateCurrentItem(bool isNext, BaseViewModel previousViewModel = null)
         {
             var item = _viewModel.Items[_viewModel.GetCurrentItemIndex()];
             var args = new List<object>(1 + (previousViewModel != null ? 1 : 0) + item.AdditionalParameters.Count());
@@ -149,6 +149,8 @@ namespace Xamarin.Forms.Wizard.Views
 
             if (_viewModel.IsAnimationEnabled)
                 await StepContent.TranslateTo(0, 0);
+
+            await (_viewModel.CurrentItem.View as IWizardView)?.OnAppearing();
         }
     }
 }
