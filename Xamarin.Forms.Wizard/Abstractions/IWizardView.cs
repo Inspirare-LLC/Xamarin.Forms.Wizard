@@ -10,5 +10,7 @@ namespace Xamarin.Forms.Wizard.Abstractions
     {
         Task<bool> OnNext(BaseViewModel viewModel);
         Task<bool> OnPrevious(BaseViewModel viewModel);
+        Task OnAppearing();
+        Task OnDissapearing();
     }
 }

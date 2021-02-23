@@ -135,8 +135,12 @@ namespace Xamarin.Forms.Wizard.ViewModels
                 NextButtonLabel = FinishButtonLabelText;
             }
 
+            await item.OnDissapearing();
             _currentItemIndex = newIndex;
             ProgressBarProgress = Math.Truncate(10 * (double)(_currentItemIndex + 1) / (Items.Count == 0 ? 1 : Items.Count)) / 10;
+            var newItem = Items[_currentItemIndex].View as IWizardView;
+            await newItem.OnAppearing();
+
             return true;
         }
 
@@ -162,8 +166,12 @@ namespace Xamarin.Forms.Wizard.ViewModels
                 NextButtonLabel = NextButtonLabelText;
             }
 
+            await item.OnDissapearing();
             _currentItemIndex = newIndex;
             ProgressBarProgress = Math.Truncate(10 * (double)(_currentItemIndex + 1) / (Items.Count == 0 ? 1 : Items.Count)) / 10;
+            var newItem = Items[_currentItemIndex].View as IWizardView;
+            await newItem.OnAppearing();
+
             return true;
         }
 
