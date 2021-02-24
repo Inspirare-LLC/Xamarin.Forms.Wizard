@@ -93,13 +93,22 @@ namespace Xamarin.Forms.Wizard.Views
             _viewModel.Title = _viewModel.Items[0].Title;
         }
 
+        /// <summary>
+        /// Call this to call OnAppearing on first item appearance
+        /// </summary>
+        /// <returns></returns>
+        public Task OnAppearing()
+        {
+            return (_viewModel.CurrentItem.View as IWizardView)?.OnAppearing();
+        }
+
         private async void BackButton_Clicked(object sender, EventArgs e)
         {
             var currentItem = _viewModel.Items[_viewModel.GetCurrentItemIndex()].ViewModel;
 
             var result = await _viewModel.DecreaseCurrentItemIndex();
             if (result)
-                UpdateCurrentItem(false, currentItem);
+                await UpdateCurrentItem(false, currentItem);
         }
 
         private async void NextButton_Clicked(object sender, EventArgs e)
