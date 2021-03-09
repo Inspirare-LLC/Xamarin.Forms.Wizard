@@ -120,7 +120,7 @@ namespace Xamarin.Forms.Wizard.ViewModels
             if (newIndex == Items.Count)
             {
                 OnFinished?.Invoke(null, new WizardFinishedEventArgs(Items));
-                return true;
+                return false;
             }
 
             if (newIndex > Items.Count() - 1)
