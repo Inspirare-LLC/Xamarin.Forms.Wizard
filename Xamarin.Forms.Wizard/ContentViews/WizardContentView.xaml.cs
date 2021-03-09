@@ -55,16 +55,16 @@ namespace Xamarin.Forms.Wizard.Views
             _viewModel.IsAnimationEnabled = isAnimationEnabled;
 
             if (!String.IsNullOrEmpty(nextLabelText))
-                _viewModel.NextButtonLabelText = nextLabelText;
+                _viewModel.NextButtonLabelText = _viewModel.NextButtonLabel = nextLabelText;
 
             if (!String.IsNullOrEmpty(backLabelText))
-                _viewModel.BackButtonLabelText = backLabelText;
+                _viewModel.BackButtonLabelText = _viewModel.BackButtonLabel = backLabelText;
 
             if (!String.IsNullOrEmpty(finishLabelText))
                 _viewModel.FinishButtonLabelText = finishLabelText;
 
             if (!String.IsNullOrEmpty(skipLabelText))
-                _viewModel.SkipButtonLabelText = skipLabelText;
+                _viewModel.SkipButtonLabelText = _viewModel.SkipButtonLabel = skipLabelText;
 
             //default color - green
             _viewModel.ProgressBarColor = progressBarColor ?? Color.Green;
