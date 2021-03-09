@@ -116,7 +116,7 @@ namespace Xamarin.Forms.Wizard.Views
             var currentItem = _viewModel.Items[_viewModel.GetCurrentItemIndex()].ViewModel;
 
             var result = await _viewModel.IncreaseCurrentItemIndex();
-            if (result)
+            if (result && !_viewModel.IsLastItem)
                 await UpdateCurrentItem(true, currentItem);
         }
 
@@ -125,7 +125,7 @@ namespace Xamarin.Forms.Wizard.Views
             var currentItem = _viewModel.Items[_viewModel.GetCurrentItemIndex()].ViewModel;
 
             var result = await _viewModel.IncreaseCurrentItemIndex(true);
-            if (result)
+            if (result && !_viewModel.IsLastItem)
                 await UpdateCurrentItem(true, currentItem);
         }
 
