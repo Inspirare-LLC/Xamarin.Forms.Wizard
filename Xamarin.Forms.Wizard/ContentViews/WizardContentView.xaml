@@ -3,7 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Xamarin.Forms.Wizard.Views.WizardContentView"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             xmlns:converters="clr-namespace:Xamarin.Forms.Wizard.Converters"
              ios:Page.UseSafeArea="true">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <converters:InvertBoolConverter x:Key="InvertBoolConverter"/>
+        </ResourceDictionary>
+    </ContentView.Resources>
     <ContentView.Content>
         <Grid>
             <Grid.RowDefinitions>
@@ -20,9 +26,10 @@
             <StackLayout Grid.Row="2" Padding="0,0,0,10">
                 <ProgressBar ProgressColor="{Binding ProgressBarColor}" Progress="{Binding ProgressBarProgress}" Visual="Material"/>
                 <StackLayout Orientation="Horizontal" Padding="20, 5">
-                    <Button IsVisible="{Binding IsNotFirstItem}" Text="{Binding BackButtonLabel}" Clicked="BackButton_Clicked" HorizontalOptions="StartAndExpand" Visual="Material"/>
-                    <Button IsVisible="{Binding IsSkippable}" Text="{Binding SkipButtonLabel}" Clicked="SkipButton_Clicked"  HorizontalOptions="EndAndExpand" Visual="Material"/>
-                    <Button Text="{Binding NextButtonLabel}" Clicked="NextButton_Clicked"  HorizontalOptions="EndAndExpand" Visual="Material"/>
+                    <Button IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}" IsVisible="{Binding IsNotFirstItem}" Text="{Binding BackButtonLabel}" Clicked="BackButton_Clicked" HorizontalOptions="StartAndExpand" Visual="Material"/>
+                    <Button IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}" IsVisible="{Binding IsCustomButtonVisible}" Text="{Binding CustomButtonLabel}" Clicked="CustomButton_Clicked" HorizontalOptions="StartAndExpand" Visual="Material"/>
+                    <Button IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}" IsVisible="{Binding IsSkippable}" Text="{Binding SkipButtonLabel}" Clicked="SkipButton_Clicked"  HorizontalOptions="EndAndExpand" Visual="Material"/>
+                    <Button IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}" Text="{Binding NextButtonLabel}" Clicked="NextButton_Clicked"  HorizontalOptions="EndAndExpand" Visual="Material"/>
                 </StackLayout>
             </StackLayout>
         </Grid>

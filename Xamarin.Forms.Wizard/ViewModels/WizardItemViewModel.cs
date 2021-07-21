@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Xamarin.Forms.Wizard.ViewModels
 {
@@ -15,13 +16,15 @@ namespace Xamarin.Forms.Wizard.ViewModels
             ViewModel = new BaseViewModel();
         }
 
-        public WizardItemViewModel(string title, Type type, BaseViewModel viewModel, bool isSkippable = false, params object[] additionalParameters) : this()
+        public WizardItemViewModel(string title, Type type, BaseViewModel viewModel, bool isSkippable = false, Func<Task> customButtonAction = null, string customButtonLabel = null, params object[] additionalParameters) : this()
         {
             Title = title;
             Type = type;
             ViewModel = viewModel ?? new BaseViewModel();
             AdditionalParameters = additionalParameters ?? new object[0];
             IsSkippable = isSkippable;
+            CustomButtonAction = customButtonAction;
+            CustomButtonLabel = customButtonLabel;
         }
 
         private Type _type;
@@ -57,6 +60,20 @@ namespace Xamarin.Forms.Wizard.ViewModels
         {
             get { return _isSkippable; }
             set { SetProperty(ref _isSkippable, value); }
+        }
+
+        private Func<Task> _customButtonAction;
+        public Func<Task> CustomButtonAction
+        {
+            get { return _customButtonAction; }
+            set { SetProperty(ref _customButtonAction, value); }
+        }
+
+        private string _customButtonLabel;
+        public string CustomButtonLabel
+        {
+            get { return _customButtonLabel; }
+            set { SetProperty(ref _customButtonLabel, value); }
         }
     }
 }

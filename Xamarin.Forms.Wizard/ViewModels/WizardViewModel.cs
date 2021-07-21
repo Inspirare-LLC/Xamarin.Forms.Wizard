@@ -93,6 +93,27 @@ namespace Xamarin.Forms.Wizard.ViewModels
             set { SetProperty(ref _progressBarColor, value); }
         }
 
+        private Func<Task> _customButtonAction;
+        public Func<Task> CustomButtonAction
+        {
+            get { return _customButtonAction; }
+            set { SetProperty(ref _customButtonAction, value); }
+        }
+
+        private bool _isCustomButtonVisible;
+        public bool IsCustomButtonVisible
+        {
+            get { return _isCustomButtonVisible; }
+            set { SetProperty(ref _isCustomButtonVisible, value); }
+        }
+
+        private string _customButtonLabel;
+        public string CustomButtonLabel
+        {
+            get { return _customButtonLabel; }
+            set { SetProperty(ref _customButtonLabel, value); }
+        }
+
         private int _currentItemIndex;
 
         public string NextButtonLabelText { get; set; }

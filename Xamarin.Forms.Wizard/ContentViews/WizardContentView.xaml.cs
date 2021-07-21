@@ -47,8 +47,8 @@ namespace Xamarin.Forms.Wizard.Views
         }
 
         public WizardContentView(IEnumerable<WizardItemViewModel> items, bool isAnimationEnabled = true, string nextLabelText = null,
-                          string backLabelText = null, string finishLabelText = null, string skipLabelText = null,
-                          Color? progressBarColor = null) : this()
+                                 string backLabelText = null, string finishLabelText = null, string skipLabelText = null,
+                                 Color? progressBarColor = null) : this()
         {
             _viewModel = new WizardViewModel();
             BindingContext = _viewModel;
@@ -129,6 +129,11 @@ namespace Xamarin.Forms.Wizard.Views
                 await UpdateCurrentItem(true, currentItem);
         }
 
+        private async void CustomButton_Clicked(object sender, EventArgs e)
+        {
+            await _viewModel.CustomButtonAction?.Invoke();
+        }
+
         private async Task UpdateCurrentItem(bool isNext, BaseViewModel previousViewModel = null)
         {
             var item = _viewModel.Items[_viewModel.GetCurrentItemIndex()];
@@ -155,6 +160,9 @@ namespace Xamarin.Forms.Wizard.Views
             _viewModel.CurrentItem = item;
             _viewModel.Title = item.Title;
             _viewModel.IsSkippable = item.IsSkippable;
+            _viewModel.CustomButtonAction = item.CustomButtonAction;
+            _viewModel.CustomButtonLabel = item.CustomButtonLabel;
+            _viewModel.IsCustomButtonVisible = item.CustomButtonAction != null;
 
             if (_viewModel.IsAnimationEnabled)
                 await StepContent.TranslateTo(0, 0);
