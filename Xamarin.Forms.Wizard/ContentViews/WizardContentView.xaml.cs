@@ -15,7 +15,7 @@ namespace Xamarin.Forms.Wizard.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class WizardContentView : ContentView
     {
-        private readonly WizardViewModel _viewModel;
+        private WizardViewModel _viewModel;
         public event EventHandler<WizardFinishedEventArgs> OnFinished
         {
             add
@@ -100,6 +100,34 @@ namespace Xamarin.Forms.Wizard.Views
         public Task OnAppearing()
         {
             return (_viewModel.CurrentItem.View as IWizardView)?.OnAppearing();
+        }
+
+        /// <summary>
+        /// Resets wizard control to its initial state
+        /// </summary>
+        public void Reset()
+        {
+            var oldViewModel = _viewModel;
+            _viewModel = new WizardViewModel();
+            BindingContext = _viewModel;
+            _viewModel.IsAnimationEnabled = oldViewModel.IsAnimationEnabled;
+            _viewModel.NextButtonLabelText = _viewModel.NextButtonLabel = oldViewModel.NextButtonLabelText;
+            _viewModel.BackButtonLabelText = _viewModel.BackButtonLabel = oldViewModel.BackButtonLabelText;
+            _viewModel.FinishButtonLabelText = oldViewModel.FinishButtonLabelText;
+            _viewModel.SkipButtonLabelText = oldViewModel.SkipButtonLabelText;
+            _viewModel.ProgressBarColor = oldViewModel.ProgressBarColor;
+            _viewModel.Items = oldViewModel.Items;
+
+            var item = _viewModel.Items[0];
+            var args = new List<object>(1 + item.AdditionalParameters.Count());
+            args.Add(item.ViewModel);
+            args.AddRange(item.AdditionalParameters);
+
+            var view = Activator.CreateInstance(item.Type, args.ToArray()) as View;
+            item.View = view;
+
+            _viewModel.CurrentItem = item;
+            _viewModel.Title = _viewModel.Items[0].Title;
         }
 
         private async void BackButton_Clicked(object sender, EventArgs e)
