@@ -29,8 +29,6 @@ namespace Xamarin.Forms.Wizard.Views
             }
         }
 
-        public Func<Type, BaseViewModel> CreateViewModelFunc { get; set; }
-
         private WizardContentView()
         {
             InitializeComponent();
@@ -119,13 +117,6 @@ namespace Xamarin.Forms.Wizard.Views
             _viewModel.SkipButtonLabelText = oldViewModel.SkipButtonLabelText;
             _viewModel.ProgressBarColor = oldViewModel.ProgressBarColor;
             _viewModel.Items = oldViewModel.Items;
-
-            //Reset view models
-            if (CreateViewModelFunc != null)
-            {
-                foreach (var viewModelItem in _viewModel.Items)
-                    viewModelItem.ViewModel = CreateViewModelFunc(viewModelItem.ViewModel.GetType());
-            }
 
             var item = _viewModel.Items[0];
             var args = new List<object>(1 + item.AdditionalParameters.Count());
