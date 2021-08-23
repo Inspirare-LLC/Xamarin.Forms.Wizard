@@ -106,7 +106,7 @@ namespace Xamarin.Forms.Wizard.Views
         /// Resets wizard control to its initial state
         /// </summary>
         /// <param name="viewModels">View models</param>
-        public void Reset(IEnumerable<KeyValuePair<Type, BaseViewModel>> viewModels = null)
+        public void Reset(IEnumerable<KeyValuePair<Type, BaseViewModel>> viewModels = null, EventHandler<WizardFinishedEventArgs> onFinishedEvent = null)
         {
             var oldViewModel = _viewModel;
             _viewModel = new WizardViewModel();
@@ -118,6 +118,10 @@ namespace Xamarin.Forms.Wizard.Views
             _viewModel.SkipButtonLabelText = oldViewModel.SkipButtonLabelText;
             _viewModel.ProgressBarColor = oldViewModel.ProgressBarColor;
             _viewModel.Items = oldViewModel.Items;
+
+            //Reset event
+            if (onFinishedEvent != null)
+                _viewModel.OnFinished += onFinishedEvent;
 
             //Reset view models
             if (viewModels != null && viewModels.Any())
