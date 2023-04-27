@@ -1,6 +1,9 @@
 # Xamarin.Forms.Wizard
 Simple Xamarin Forms wizard control
 
+![Wizard-Form-Demo](Wizard-Form-Demo.gif)
+
+
 # Nuget package
 Available as nuget package at https://www.nuget.org/packages/Xamarin.Forms.Wizard/
 Install it in shared code project.
