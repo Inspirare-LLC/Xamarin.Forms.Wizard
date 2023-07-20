@@ -29,26 +29,30 @@ namespace Xamarin.Forms.Wizard.Views
             }
         }
 
-        private WizardContentView()
+        private WizardContentView(bool allowSwipeGestures = true)
         {
             InitializeComponent();
-            var swipeLeftGestureRecognizer = new SwipeGestureRecognizer();
-            swipeLeftGestureRecognizer.Direction = SwipeDirection.Left;
-            swipeLeftGestureRecognizer.Threshold = 40;
-            swipeLeftGestureRecognizer.Swiped += (args, obj) => NextButton_Clicked(null, null);
 
-            var swipeRightGestureRecognizer = new SwipeGestureRecognizer();
-            swipeRightGestureRecognizer.Direction = SwipeDirection.Right;
-            swipeRightGestureRecognizer.Threshold = 40;
-            swipeRightGestureRecognizer.Swiped += (args, obj) => BackButton_Clicked(null, null);
+            if (allowSwipeGestures)
+            {
+                var swipeLeftGestureRecognizer = new SwipeGestureRecognizer();
+                swipeLeftGestureRecognizer.Direction = SwipeDirection.Left;
+                swipeLeftGestureRecognizer.Threshold = 40;
+                swipeLeftGestureRecognizer.Swiped += (args, obj) => NextButton_Clicked(null, null);
 
-            Content.GestureRecognizers.Add(swipeLeftGestureRecognizer);
-            Content.GestureRecognizers.Add(swipeRightGestureRecognizer);
+                var swipeRightGestureRecognizer = new SwipeGestureRecognizer();
+                swipeRightGestureRecognizer.Direction = SwipeDirection.Right;
+                swipeRightGestureRecognizer.Threshold = 40;
+                swipeRightGestureRecognizer.Swiped += (args, obj) => BackButton_Clicked(null, null);
+
+                Content.GestureRecognizers.Add(swipeLeftGestureRecognizer);
+                Content.GestureRecognizers.Add(swipeRightGestureRecognizer);
+            }
         }
 
         public WizardContentView(IEnumerable<WizardItemViewModel> items, bool isAnimationEnabled = true, string nextLabelText = null,
                                  string backLabelText = null, string finishLabelText = null, string skipLabelText = null,
-                                 Color? progressBarColor = null) : this()
+                                 Color? progressBarColor = null, bool allowSwipeGestures = true) : this(allowSwipeGestures)
         {
             _viewModel = new WizardViewModel();
             BindingContext = _viewModel;
@@ -90,7 +94,7 @@ namespace Xamarin.Forms.Wizard.Views
             item.View = view;
 
             _viewModel.CurrentItem = item;
-            _viewModel.Title = _viewModel.Items[0].Title;
+            _viewModel.Title = item.Title;
         }
 
         /// <summary>
@@ -141,7 +145,7 @@ namespace Xamarin.Forms.Wizard.Views
             item.View = view;
 
             _viewModel.CurrentItem = item;
-            _viewModel.Title = _viewModel.Items[0].Title;
+            _viewModel.Title = item.Title;
         }
 
         private async void BackButton_Clicked(object sender, EventArgs e)
