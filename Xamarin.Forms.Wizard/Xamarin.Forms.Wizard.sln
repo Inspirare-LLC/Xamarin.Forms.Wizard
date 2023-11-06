@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30907.101
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Forms.Wizard", "Xamarin.Forms.Wizard.csproj", "{990C8C25-3C56-4801-AB11-2070316AA3D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Forms.Wizard", "Xamarin.Forms.Wizard.csproj", "{990C8C25-3C56-4801-AB11-2070316AA3D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Android", "..\Demo\Demo.Android\Demo.Android.csproj", "{4C09C876-592E-4D9F-908E-41D0BF732338}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Core", "..\Demo\Demo\Demo.Core.csproj", "{11E58665-5BE4-4B06-9EC1-8B33E94BF38B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,16 @@ Global
 		{990C8C25-3C56-4801-AB11-2070316AA3D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{990C8C25-3C56-4801-AB11-2070316AA3D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{990C8C25-3C56-4801-AB11-2070316AA3D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C09C876-592E-4D9F-908E-41D0BF732338}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C09C876-592E-4D9F-908E-41D0BF732338}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C09C876-592E-4D9F-908E-41D0BF732338}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{4C09C876-592E-4D9F-908E-41D0BF732338}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C09C876-592E-4D9F-908E-41D0BF732338}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C09C876-592E-4D9F-908E-41D0BF732338}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{11E58665-5BE4-4B06-9EC1-8B33E94BF38B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11E58665-5BE4-4B06-9EC1-8B33E94BF38B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11E58665-5BE4-4B06-9EC1-8B33E94BF38B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11E58665-5BE4-4B06-9EC1-8B33E94BF38B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
